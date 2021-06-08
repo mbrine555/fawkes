@@ -10,7 +10,26 @@ setup(
     python_requires='>=3.6, <4',
     install_requires=[
         'pandas',
-        'gensim'
+        'nltk',
+        'python-twitter',
+        'gsheets',
+        'scikit-learn',
+        'xmltodict',
+        'sendgrid',
+        'BeautifulSoup4',
+        'html5lib',
+        'tensorflow',
+        'yapf',
+        'coverage',
+        'codecov',
+        'pre-commit',
+        'jsonschema',
+        'splunk-sdk',
+        'numpy',
+        'tensorflow_hub',
+        'vertica-python',
+        'gensim',
+        'sentence-transformers'
     ],
     entry_points={
         'console_scripts': [
