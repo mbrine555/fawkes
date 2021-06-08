@@ -1,17 +1,9 @@
 """ This will serve as the CLI for fawkes """
 import argparse
-import sys
-import os
 import logging
 
-# This is so that below import works.  Sets the pwd to home directory
-sys.path.append(os.path.realpath("."))
-
-import fawkes.constants.constants as constants
-
-
 from fawkes.cli.fawkes_actions import FawkesActions
-
+import fawkes.constants.constants as constants
 
 def define_arguments(parser):
     # Specify an action
