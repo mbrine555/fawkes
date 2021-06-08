@@ -1,16 +1,13 @@
-import sys
-import os
-import json
 import csv
 import importlib
-import pathlib
+import json
 import logging
+import os
+import pathlib
+from pprint import pprint
+import sys
 
 from pytz import timezone
-from pprint import pprint
-
-# This is so that below import works.  Sets the pwd to home directory
-sys.path.append(os.path.realpath("."))
 
 import fawkes.utils.utils as utils
 import fawkes.constants.constants as constants
