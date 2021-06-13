@@ -26,6 +26,14 @@ from fawkes.configs.app_config import AppConfig, ReviewChannelTypes
 from fawkes.configs.fawkes_config import FawkesConfig
 from fawkes.cli.fawkes_actions import FawkesActions
 
+class Fetcher:
+    def __init__(self, plugins=[]):
+        self._plugins = plugins
+
+    def run(self):
+        for plugin in self._plugins:
+            plugin.fetch()
+            
 def fetch_reviews(fawkes_config_file = constants.FAWKES_CONFIG_FILE):
     # Read the app-config.json file.
     fawkes_config = FawkesConfig(

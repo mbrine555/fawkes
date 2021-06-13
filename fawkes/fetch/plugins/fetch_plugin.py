@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-class Connector(ABC):
+class FetchPlugin(ABC):
     @abstractmethod
     def __init__(self):
         pass
