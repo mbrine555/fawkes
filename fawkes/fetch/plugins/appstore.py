@@ -5,10 +5,12 @@ import requests
 from fawkes.fetch.plugins.fetch_plugin import FetchPlugin
 
 class AppStore(FetchPlugin):
-    def __init__(self):
-        self.app_id = 300238550
-        self.country = 'us'
+    _platform = 'app_store'
 
+    def __init__(self, country, app_id):
+        self.country = country
+        self.app_id = app_id
+        
     def fetch(self):
         reviews = []
         logging.info("Fetching App Store reviews")

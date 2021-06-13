@@ -1,9 +1,11 @@
 from abc import ABC, abstractmethod
 
 class FetchPlugin(ABC):
-    @abstractmethod
-    def __init__(self):
-        pass
+    plugins = {}
+    
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+        cls.plugins[cls._platform] = cls
 
     @abstractmethod
     def fetch(self):

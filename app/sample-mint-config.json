@@ -59,58 +59,12 @@
         }
     },
     "env_keys": [],
-    "review_channels": [
-        {
-            "channel_type": "ios",
-            "channel_name": "appstore",
-            "file_type": "json",
-            "file_path": null,
-            "is_channel_enabled": true,
-            "timestamp_key": "updated",
-            "timestamp_format": "",
-            "timezone": "US/Pacific",
-            "message_key": "content",
-            "rating_key": "rating",
-            "rating_max_value": 5.0,
+    "review_channels": {
+        "app_store": {
             "app_id": "300238550",
-            "country": "us",
-            "user_id_key": null,
-            "num_pages_to_fetch": 10
-        },
-        {
-            "channel_type": "remote_file",
-            "channel_name": "amazon-musical-instruments",
-            "file_type": "json.lines",
-            "file_path": "https://github.com/MadaraUchiha-314/fawkes-dataset/blob/main/amazon/musical-instruments/musical-instruments-sample.json?raw=true",
-            "is_channel_enabled": false,
-            "timestamp_key": "unixReviewTime",
-            "timestamp_format": "unix_timestamp",
-            "timezone": "UTC",
-            "message_key": "reviewText",
-            "rating_key": "overall",
-            "rating_max_value": 5.0,
-            "user_id_key": null
-        },
-        {
-            "channel_type": "splunk",
-            "channel_name": "splunk-review",
-            "file_type": "json",
-            "file_path": null,
-            "is_channel_enabled": false,
-            "timestamp_key": "updated",
-            "timestamp_format": "%Y-%m-%d %H:%M:%S",
-            "timezone": "UTC",
-            "message_key": "content",
-            "rating_key": "rating",
-            "rating_max_value": 5.0,
-            "host": "localhost",
-            "port": 443,
-            "username": "user",
-            "password": "password",
-            "query" : "index=user_reviews earliest=-10m latest=now",
-            "user_id_key": null
+            "country": "us"
         }
-    ],
+    },
     "custom_code_module_path": null,
     "fawkes_internal_config": {
         "data": {
