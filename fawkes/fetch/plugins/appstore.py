@@ -10,7 +10,7 @@ class AppStore(FetchPlugin):
     def __init__(self, country, app_id):
         self.country = country
         self.app_id = app_id
-        
+
     def fetch(self):
         reviews = []
         logging.info("Fetching App Store reviews")
@@ -29,5 +29,5 @@ class AppStore(FetchPlugin):
                 new_reviews = resp_json['feed']['entry']
             except KeyError:
                 break
-            reviews.append(new_reviews)
+            reviews.extend(new_reviews)
         return reviews
