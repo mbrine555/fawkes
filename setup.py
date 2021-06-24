@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='fawkes',
+    name='fawkespy',
     version='0.1.0',
     author='Rohith R',
     author_email='example@email.com',
