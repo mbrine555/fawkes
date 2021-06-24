@@ -1,13 +1,14 @@
 import json
 import logging
 import requests
+from typing import List, Mapping
 
 from fawkes.fetch.plugins.fetch_plugin import FetchPlugin
 
 class AppStore(FetchPlugin):
     _platform = 'app_store'
 
-    def __init__(self, country, app_id):
+    def __init__(self, country: str, app_id: str):
         self.country = country
         self.app_id = app_id
 
@@ -30,4 +31,7 @@ class AppStore(FetchPlugin):
             except KeyError:
                 break
             reviews.extend(new_reviews)
+        return reviews
+
+    def parse(self, reviews: List[Mapping[str, Any]]):
         return reviews

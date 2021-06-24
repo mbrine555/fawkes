@@ -69,54 +69,19 @@ class Review:
 
     def __init__(
         self,
-        review,
-        *,
-        message = "",
-        timestamp = "",
-        app_name = "",
-        channel_name = "",
-        channel_type = "",
+        message: str,
+        timestamp:  = "",
+        channel_name: str = "",
         rating = None,
-        rating_max_value = None,
-        user_id = None,
-        review_timezone="UTC",
-        timestamp_format=constants.TIMESTAMP_FORMAT,
-        hash_id=None,
-        raw_review = None,
+        user_id = None
     ):
         """ Initialiser of a user review """
-
-        self.message = message
-        self.timestamp = timestamp
-        self.app_name = app_name
+        self.message = self._clean_message(message)
+        self.timestamp = self._convert_timezone(timestamp)
         self.channel_name = channel_name
-        self.channel_type = channel_type
-
-        # Optional but core fields
-        # Rating. We check if the rating is present or not.
-        if rating != None:
-            # Sometimes we get empty strings. So can't assume anything about the data type.
-            try:
-                self.rating = float(rating)
-                # Normalising the rating to be a value between 1 - 5
-                if rating_max_value != None:
-                    self.rating = constants.RATINGS_NORMALIZATION_CONSTANT * (self.rating / rating_max_value)
-            except ValueError:
-                self.rating = None
-        else:
-            self.rating = None
-        # User Id.
         self.user_id = user_id
 
-        # Derived Insights
-        if constants.DERIVED_INSIGHTS in review:
-            self.derived_insight = DerivedInsight(review[constants.DERIVED_INSIGHTS])
-        else:
-            self.derived_insight = DerivedInsight()
-
-        # The raw value of the review itself.
-        # We need to clean it up. https://github.com/intuit/fawkes/issues/58
-        self.raw_review = utils.remove_empty_keys(raw_review)
+        rating = self._normalize_rating(rating)
 
         # Now that we have all info that we wanted for a review.
         # We do some post processing.
@@ -127,43 +92,34 @@ class Review:
                 timestamp, timestamp_format # Parse it using the given timestamp format
             )
 
-        self.timestamp = self.timestamp.replace(
+        # Every review hash id which is unique to the message and the timestamp
+        self.hash_id = utils.calculate_hash(self.message + self.timestamp.strftime(
+            constants.TIMESTAMP_FORMAT # Convert it to a standard datetime format
+        ) + str(self.user_id))
+
+    def _clean_message(self, message):
+        # Removes links from message using regex
+        message = url_regex.sub("", message)
+        # Removing the non ascii chars
+        message = (message.encode("ascii", "ignore")).decode("utf-8")
+        return message
+
+    def _convert_timezone(self, timestamp):
+        timestamp = timestamp.replace(
             tzinfo=timezone(review_timezone) # Replace the timezone with the given timezone
         ).astimezone(
             timezone("UTC") # Convert it to UTC timezone
         )
+        return timestamp
 
-        # Clean up the message
-        # Removes links from message using regex
-        self.message = url_regex.sub("", self.message)
-        # Removing the non ascii chars
-        self.message = (self.message.encode("ascii", "ignore")).decode("utf-8")
-
-        # Determine the hash-id.
-        # It should, almost in all cases never be overridden.
-        if hash_id != None:
-            self.hash_id = hash_id
-        else:
-            # Every review hash id which is unique to the message and the timestamp
-            self.hash_id = utils.calculate_hash(self.message + self.timestamp.strftime(
-                constants.TIMESTAMP_FORMAT # Convert it to a standard datetime format
-            ) + str(self.user_id))
-
-    @classmethod
-    def from_review_json(cls, review):
-        """ Initialse a user review object from a dict """
-
-        return cls(
-            review,
-            message=review["message"],
-            timestamp=review["timestamp"],
-            app_name=review["app_name"],
-            channel_name=review["channel_name"],
-            channel_type=review["channel_type"],
-            rating=review["rating"],
-            user_id=review["user_id"],
-            raw_review=review["raw_review"]
-        )
+    def _normalize_rating(self, rating):
+        rating = float(rating)
+        # Normalising the rating to be a value between 1 - 5
+        if rating_max_value != None:
+            rating = constants.RATINGS_NORMALIZATION_CONSTANT * (rating / rating_max_value)
+            except ValueError:
+                rating = None
+        return rating
 
     def to_dict(self):
         """ Converts the Review class object to a dict """
@@ -177,10 +133,7 @@ class Review:
             "user_id": self.user_id,
             "app_name": self.app_name,
             "channel_name": self.channel_name,
-            "channel_type": self.channel_type,
             "hash_id": self.hash_id,
-            "derived_insight": self.derived_insight.to_dict(),
-            "raw_review": self.raw_review,
         }
 
     def __lt__(self, other):
