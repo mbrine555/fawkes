@@ -8,6 +8,7 @@ setup(
     url='https://github.com/intuit/fawkes',
     packages=find_packages(exclude=['test']),
     python_requires='>=3.6, <4',
+    data_files=[('fawkes_config', ['app/fawkes-config.json', 'app/sample-mint-config.json'])],
     install_requires=[
         'pandas',
         'nltk',
